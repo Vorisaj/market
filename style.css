@@ -1,39 +1,159 @@
-html {
-    font-size: 10px;
-    -webkit-tap-highlight-color: transparent;
-}
+:root {
+    --background: black;
+    --borders: black;
+    --font: #a09a94;
+    --highlighed: #a75f3c;
+  }
+
+.center {
+    margin: auto;
+    text-align: center;
+    border: 1px solid var(--borders);
+    border-radius: 5px;
+  }
 
 body {
-    font-family: Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 15px;
-    line-height: 1.42857143;
-    color: #ddd;
-  background-color: #0c0c0c;
-  margin: 0;
+    color: var(--font);
+    background-color: var(--background);
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-.text-center {
-    text-align: center;
+.mine a:link {
+    color: var(--highlighed);
+}
+.mine a:visited {
+    color: var(--highlighed);
 }
 
-.h1, h1 {
-    font-size: 39px;
+a:link {
+    color: var(--font);
+}
+a:visited {
+    color: var(--font);
 }
 
-  
-table {
-    border-collapse: collapse;
-  } 
-  
-  td, th {
-    border: 1px solid #3b3b3b;
-    text-align: center;
+.custom-table thead tr, .custom-table thead th {
+    border-top: none;
+    border-bottom: none !important;
+    color: #fff;
+}
+
+.custom-table tbody tr:not(.spacer) {
+    border-radius: 7px;
+    overflow: hidden;
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+.custom-table tbody tr th:first-child, .custom-table tbody tr td:first-child {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.custom-table tbody th, .custom-table tbody td {
+    color: var(--font);
+    font-weight: 400;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.custom-table tbody tr th, .custom-table tbody tr td {
+    background: #25252b;
+    border: none;
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.mine td {
+    color: var(--highlighed) !important;
+}
+
+td {
     padding: 3px;
-  }
-  
-  td, th {
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-  
-  
+    border: 1px solid var(--borders);
+}
+
+th {
+    padding: 5px;
+    font-weight: bold;
+}
+
+#leftcharcontainer {
+    float: left;
+}
+
+.markettable {
+    
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.markettable td {
+    border: 1px solid #dddddd2e;
+    text-align: center;
+}
+
+.markettable  tr td:first-child{
+    text-align: left;
+}
+
+.marketred td {
+    background-color: #360b0b;
+}
+
+.green {
+    background-color: #004606;
+}
+
+.centered {
+    text-align: center;
+}
+
+.greentr td {
+    background-color: #003100 !important;
+}
+
+.redtr td {
+    background-color: #360b0b !important;
+}
+
+.totalcost {
+    color: #952a2a !important;
+}
+
+.totalsell {
+    color: #005800 !important;
+}
+
+.low {
+    background-color: #583700 !important;
+}
+
+.medium {
+    background-color: #583300 !important;
+}
+
+.high {
+    background-color: #5e0000 !important;
+}
+
+.redrow td {
+    border-bottom: 1px solid #5e0000;
+}
+
+#soldItemsTable {
+    border-collapse: collapse;
+}
+
+#soldItemsTable td {
+    text-align: center;
+}
