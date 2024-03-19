@@ -7,7 +7,7 @@
 
     <body>
 
-Generated at 2024-03-19 17:15:47 pm EVE time</br>
+Generated at 2024-03-19 18:00:02 pm EVE time</br>
 <div class="row">
     <div class="column center">
         <h1>Fleet report</h1>
@@ -42,7 +42,7 @@ Generated at 2024-03-19 17:15:47 pm EVE time</br>
 
       <h3>Doctrine ships</h3>
       <table id="doctrineshipstable" class="markettable center"><tr class='header'><td style='text-align: center' width=100>Hull</td><td style='text-align: center' width=130>Fit Name</td>
-      <td width=50>on contracts</td><td width=50>Stock Level</td></tr>
+      <td width=50>Availability</td><td width=50>Stock Level</td></tr>
       <tr class="zero"><td style="text-align: center">Cormorant</td><td style="text-align: center"><a href="#fit_240">T1 Cormorant</a></td><td class="totalcost" style="text-align: center">26</td><td class="totalcost" style="text-align: center">93%</td></tr>
 </table>
 
@@ -110,7 +110,7 @@ Generated at 2024-03-19 17:15:47 pm EVE time</br>
         var stock = Math.round(contract["available"]/contract['required']*100);
         var classtype = stock >= 100 ? "totalsell" : (stock < 50 ? "totalcost" : "orange");
 
-        $("#doctrineshipstable tbody").append("<tr><td class='"+classtype+"'>"+contract["ship_type"]+"</td><td class='"+classtype+"'>"+contract["fit_name"]+"</td><td class='"+classtype+"'>"+contract["available"]+"</td><td class='"+classtype+"'>"+stock+"%</td></tr>");
+        $("#doctrineshipstable tbody").append("<tr><td class='"+classtype+"'>"+contract["ship_type"]+"</td><td class='"+classtype+"'>"+contract["fit_name"]+"</td><td class='"+classtype+"'>"+contract["a_available"]+" / "+contract["required"]+"</td><td class='"+classtype+"'>"+stock+"%</td></tr>");
     
         for (const [key, value] of Object.entries(contract['needed_ammo_fit'])) {
           
