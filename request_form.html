@@ -10,10 +10,10 @@
         <div class="row">
             <div class="column center">
                 
-                    Requestor (in-game name):<br/>
+                    <span class="label">Requestor (in-game name):</span><br/>
                     <input type="text" name="requestor_name" id="requestor_name"/><br/>
                     <br/>
-                    Request type:<br/>
+                    <span class="label">Request type:</span><br/>
                     <select name="request_type" id="request_type">
                         <option value=""></option>
                         <option value="import">Import</option>
@@ -36,7 +36,7 @@ Tritanium 22222
 Pyerite 8000" name="details" id="details"></textarea></br>
                     </div><br/>
 
-                    Comment:<br/>
+                    <span class="label">Comment:</span><br/>
                     <input type="text" name="comment" id="comment"/><br/>
 
                     <br/>
@@ -123,7 +123,17 @@ Pyerite 8000" name="details" id="details"></textarea></br>
 
                 $("#submit").click("click",function() {
                     $(this).hide();
+                    $("#doctrine_ship_details").hide();
+                    $("#doctrine_ships_amount").hide();
+                    $("#doctrine_ships_price").hide();
+                    $("#request_type").hide();
+                    $("#comment").hide();
+                    $("#general_error").hide();
                     $("#loading").show();
+                    $("#type").hide();
+                    $("#details").hide();
+                    $("#requestor_name").hide();
+                    $(".label").hide();
                     const type = $('#request_type').val();
                     var payload = {};
                     if (type == "import") payload = {"import_request":1,"comment":$("#comment").val()};
@@ -134,8 +144,10 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                         data: payload,
                         success: (data) => {
                             $("#loading").hide();
+                            data = JSON.parse(data);
                             if ("error" in data) {
                                 $("#general_error").show();
+                                $(this).show();
                             } else {
                                 $("#general_success").show();
                             }
@@ -156,9 +168,7 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                         data: {"quote":1, "input":$("#details").val(), "requestor_name":$("#requestor_name").val(), "request_type":$("#request_type").val(),"g-recaptcha-response":$("#g-recaptcha-response").val()},
                         success: (data) => {
                             data = JSON.parse(data);
-                            console.log(data);
-                            $("#loading").hide();
-                            
+                            $("#loading").hide();                            
                             if ("error" in data) {
                                 $("#captcha_error").show();
                             } else {
