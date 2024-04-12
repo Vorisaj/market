@@ -144,7 +144,7 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                     $(".g-recaptcha").hide();
                     const type = $('#request_type').val();
                     var payload = {};
-                    if (type == "import") payload = {"import_request":1};
+                    if (type == "import") payload = {"import_request":1,"g-recaptcha-response":$("#g-recaptcha-response").val()};
                     if (type == "doctrine_ship") payload = {"requestor":$("#requestor_name").val(),"ship_request":1,"comment":$("#comment").val(),"amount":$("#doctrine_ships_amount").val(),"fit":$("#doctrine_ships_select").val(),"g-recaptcha-response":$("#g-recaptcha-response").val()};
                     $.ajax({
                         type: "POST",
