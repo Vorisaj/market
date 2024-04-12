@@ -21,6 +21,12 @@
                         <option value="doctrine_ship">Doctrine Ship Order</option>
                     </select><br/>
                     <br/>
+                    <div id="doctrine_ship_details" style="display: none;">
+                        <span id="doctrine_fetching_message">Fetching price sheet...<br/></span>
+                        <select name="doctrine_ships_select" id="doctrine_ships_select"></select><br/>
+                        Amount:  <input type="text" name="doctrine_ships_amount" id="doctrine_ships_amount"/><br/>
+                        Price: <span id="doctrine_ship_price">0</span> ISK</br>
+                    </div>
                     <div id="import_details" style="display: none;">
                         Import details:<br/>
                         <textarea style="width:400px; height:200px; " placeholder="Enter list of items to be appraised.
@@ -28,8 +34,10 @@ example:
 
 Tritanium 22222
 Pyerite 8000" name="details" id="details"></textarea></br>
-                    </div>
+                    </div><br/>
 
+                    Comment:<br/>
+                    <input type="text" name="comment" id="comment"/><br/>
 
                     <br/>
                     <img src="loading.gif" style="display: none; width: 30px;" id="loading"/><br/>
@@ -44,10 +52,69 @@ Pyerite 8000" name="details" id="details"></textarea></br>
         </div>
 
         <script>
-            $(document).ready(function(){
+            var pricesheeet = undefined;
+            function GetPriceSheet() {
+                pricesheeet = [];
+                const url = "https://vorisaj.github.io/market/contracts.html";
+                fetch(url)
+                    .then(response => response.text())
+                    .then(fetchedHTMLContent => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(fetchedHTMLContent, "text/html");
+                        const tableRows = doc.querySelectorAll("table tr");
 
-                $('select').on('change', function() {
+                        const headers = Array.from(tableRows[0].cells).map(cell => cell.textContent);
+
+                        for(var i = 1; i < tableRows.length; i++) {
+                            var entry = [];
+                            var cells = tableRows[i].cells;
+                            for(var j = 0; j<cells.length; j++) {
+                                entry[headers[j]] = cells[j].textContent;
+                            }
+                            pricesheeet.push(entry);
+                        }
+
+                        $("#doctrine_fetching_message").remove();
+                        for(var i = 0; i < pricesheeet.length; i++) {
+                            $("#doctrine_ships_select").append('<option value="'+pricesheeet[i]["Contract Title"]+'">'+pricesheeet[i]["Contract Title"]+'</option>');
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching or parsing HTML:", error);
+                    });
+            }
+
+            function RecalculateDoctrineShipPrice() {
+                var selected = $("#doctrine_ships_select").val();
+                for(var i = 0; i < pricesheeet.length; i++) {
+                        if (pricesheeet[i]["Contract Title"] == selected) {
+                            var price = parseInt(pricesheeet[i]["Contract Price"].replaceAll(",",""));
+                            var amount = $("#doctrine_ships_amount").val();
+                            if (isNaN(amount)) return;
+                            $("#doctrine_ship_price").html((price*amount).toLocaleString('en'));
+                            break;
+                        }
+                    }
+            }
+
+            $(document).ready(function(){
+                GetPriceSheet();
+
+                $('#doctrine_ships_select').on('change', function() {
+                    RecalculateDoctrineShipPrice();
+                });
+                $('#doctrine_ships_amount').on('input', function() {
+                    RecalculateDoctrineShipPrice();
+                });
+
+                $('#request_type').on('change', function() {
                     if (this.value == "import") $("#import_details").show(); else $("#import_details").hide();
+                    if (this.value == "doctrine_ship") {
+                         if (pricesheeet == undefined) {
+                            GetPriceSheet();
+                         }
+                         $("#doctrine_ship_details").show();
+                    } else $("#doctrine_ship_details").hide();
                 });
 
                 $("#submit").click("click",function() {
