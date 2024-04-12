@@ -11,20 +11,32 @@
             <div class="column center">
                 
                     Requestor (in-game name):<br/>
-                    <input type="text" name="requestor_name"/><br/>
+                    <input type="text" name="requestor_name" id="requestor_name"/><br/>
                     <br/>
                     Request type:<br/>
-                    <select name="request_type" id="type">
+                    <select name="request_type" id="request_type">
+                        <option value=""></option>
                         <option value="import">Import</option>
                         <option value="market_request">Market Request</option>
                         <option value="doctrine_ship">Doctrine Ship Order</option>
                     </select><br/>
                     <br/>
-                    Request details:<br/>
-                    <textarea name="details" id="details"></textarea></br>
+                    <div id="import_details" style="display: none;">
+                        Import details:<br/>
+                        <textarea style="width:400px; height:200px; " placeholder="Enter list of items to be appraised.
+example:
+
+Tritanium 22222
+Pyerite 8000" name="details" id="details"></textarea></br>
+                    </div>
+
+
                     <br/>
+                    <img src="loading.gif" style="display: none; width: 30px;" id="loading"/><br/>
                     <input style="display: none;" type="Submit" id="submit" value="Submit Quote"/>
                     <input type="Submit" id="calculate" value="Calculate Quote"/><br/>
+                    <span style="color:red; display: none;" id="captcha_error">Captcha Error!</br></span>
+                    <span style="color:red; display: none;" id="general_error">Something went wrong Error!</br></span>
                     <div class="g-recaptcha" data-sitekey="6Lf8D7kpAAAAAKWj_yht89iqHbvbUxFIaCPu_Sli"></div>
                     <i>All Import deliveries will be made to Sigga - Garden of Thorns. Contract price on delivery will be at <b>Jita +15%</b></i>
               
@@ -34,18 +46,53 @@
         <script>
             $(document).ready(function(){
 
+                $('select').on('change', function() {
+                    if (this.value == "import") $("#import_details").show(); else $("#import_details").hide();
+                });
+
+                $("#submit").click("click",function() {
+                    $(this).hide();
+                    $("#loading").show();
+                    $.ajax({
+                        type: "POST",
+                        url: "https://market.baldhead.eu/kauihznaiuslamxjd.php",
+                        data: {"submit":1},
+                        success: (data) => {
+                            $("#loading").hide();
+                            if ("error" in data) {
+                                $("#general_error").show();
+                            } else {
+                    
+                                $("#submit").show();
+                            }
+                        }
+                    });
+                });
+
                 $("#calculate").click("click",function() {
                     $(this).hide();
-                    //Show loading
+                    $("#loading").show();
+                    $("#type").hide();
+                    $("#details").hide();
+                    $("#requestor_name").hide();
                     var request_data = $("#details").val();
                     $.ajax({
                         type: "POST",
                         url: "https://market.baldhead.eu/kauihznaiuslamxjd.php",
-                        data: {"quote":1, "input":$("#details").val(), "g-recaptcha-response":$("#g-recaptcha-response").val()},
+                        data: {"quote":1, "input":$("#details").val(), "requestor_name":$("#requestor_name").val(), "request_type":$("#request_type").val(),"g-recaptcha-response":$("#g-recaptcha-response").val()},
                         success: (data) => {
+                            data = JSON.parse(data);
                             console.log(data);
-                            $("#submit").show();
-                        }
+                            $("#loading").hide();
+                            
+                            if ("error" in data) {
+                                $("#captcha_error").show();
+                            } else {
+                                
+                                $("#submit").show();
+                            }
+                        },
+
                         });
 
                     
