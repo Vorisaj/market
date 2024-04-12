@@ -45,6 +45,7 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                     <input type="Submit" id="calculate" value="Calculate Quote"/><br/>
                     <span style="color:red; display: none;" id="captcha_error">Captcha Error!</br></span>
                     <span style="color:red; display: none;" id="general_error">Something went wrong Error!</br></span>
+                    <span style="color:green; display: none;" id="general_success">Request Submited! Refresh the page to create a new one!</br></span>
                     <div class="g-recaptcha" data-sitekey="6Lf8D7kpAAAAAKWj_yht89iqHbvbUxFIaCPu_Sli"></div>
                     <i>All Import deliveries will be made to Sigga - Garden of Thorns. Contract price on delivery will be at <b>Jita +15%</b></i>
               
@@ -108,11 +109,14 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                 });
 
                 $('#request_type').on('change', function() {
-                    if (this.value == "import") $("#import_details").show(); else $("#import_details").hide();
+                    $("#calculate").hide();
+                    $("#submit").hide();
+                    if (this.value == "import") {
+                        $("#calculate").show();
+                        $("#import_details").show(); 
+                    } else $("#import_details").hide();
                     if (this.value == "doctrine_ship") {
-                         if (pricesheeet == undefined) {
-                            GetPriceSheet();
-                         }
+                         $("#submit").show();
                          $("#doctrine_ship_details").show();
                     } else $("#doctrine_ship_details").hide();
                 });
@@ -120,17 +124,20 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                 $("#submit").click("click",function() {
                     $(this).hide();
                     $("#loading").show();
+                    const type = $('#request_type').val();
+                    var payload = {};
+                    if (type == "import") payload = {"import_request":1,"comment":$("#comment").val()};
+                    if (type == "doctrine_ship") payload = {"ship_request":1,"comment":$("#comment").val(),"amount":$("#doctrine_ships_amount").val(),"fit":$("#doctrine_ships_select").val()};
                     $.ajax({
                         type: "POST",
                         url: "https://market.baldhead.eu/kauihznaiuslamxjd.php",
-                        data: {"submit":1},
+                        data: payload,
                         success: (data) => {
                             $("#loading").hide();
                             if ("error" in data) {
                                 $("#general_error").show();
                             } else {
-                    
-                                $("#submit").show();
+                                $("#general_success").show();
                             }
                         }
                     });
