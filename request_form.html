@@ -8,7 +8,7 @@
 
     <body>
         <div class="row">
-            <div class="column center">
+            <div class="column center" id="main_content">
                 
                     <span class="label">Requestor (in-game name):</span><br/>
                     <input type="text" name="requestor_name" id="requestor_name"/><br/>
@@ -156,10 +156,13 @@ Pyerite 8000" name="details" id="details"></textarea></br>
 
                 $("#calculate").click("click",function() {
                     $(this).hide();
+                    $("#request_type").hide();
                     $("#loading").show();
                     $("#type").hide();
                     $("#details").hide();
+                    $(".label").hide();
                     $("#requestor_name").hide();
+                    $("#comment").hide();
                     var request_data = $("#details").val();
                     $.ajax({
                         type: "POST",
@@ -171,7 +174,11 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                             if ("error" in data) {
                                 $("#captcha_error").show();
                             } else {
-                                
+                                //print summary
+                                var table = "<table>";
+                                table += "<tr><td>Appraisal</td><td>https://janice.e-351.com/a/"+data["code"]+"</td></tr>";
+                                table += "</table>";
+
                                 $("#submit").show();
                             }
                         },
