@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
 
     <body>
@@ -24,7 +25,7 @@
                     <br/>
                     <input style="display: none;" type="Submit" id="submit" value="Submit Quote"/>
                     <input type="Submit" id="calculate" value="Calculate Quote"/><br/>
-
+                    <div class="g-recaptcha" data-sitekey="6Lf8D7kpAAAAAKWj_yht89iqHbvbUxFIaCPu_Sli"></div>
                     <i>All Import deliveries will be made to Sigga - Garden of Thorns. Contract price on delivery will be at <b>Jita +15%</b></i>
               
             </div>
@@ -39,8 +40,8 @@
                     var request_data = $("#details").val();
                     $.ajax({
                         type: "POST",
-                        url: "https://janice.e-351.com/api/rpc/v1?m=Appraisal.create",
-                        data: {"id":1,"method":"Appraisal.create","params":{"marketId":2,"designation":100,"pricing":200,"pricingVariant":100,"pricePercentage":1.15,"input":request_data,"comment":"","compactize":true}} ,
+                        url: "https://market.baldhead.eu/kauihznaiuslamxjd.php",
+                        data: {"quote":1, "input":$("#details").val(), "g-recaptcha-response":$("#g-recaptcha-response").val()},
                         success: (data) => {
                             console.log(data);
                             $("#submit").show();
