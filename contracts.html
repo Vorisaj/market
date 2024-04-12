@@ -1,8 +1,11 @@
 
-<html>
+<!DOCTYPE html>
     <head>
-        <link rel="stylesheet" href="style.css"></link>
+        <title>Pricesheet</title>
+        <link rel="stylesheet" href="style.css"/>
+         <link rel="stylesheet" href="contracts.css"/>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="contracts.js"></script>
     </head>
 
     <body>
@@ -27,137 +30,5 @@ Generated at 2024-04-11 19:38:23 pm EVE time<br/>
 </div>
 </div>
 <div id="loading">copied!</div>
-
-<script>
-      $(document).ready(function() {
-        $('.copy-text').on('click', function() {
-            var textToCopy = $(this).text();
-            var $tempInput = $('<input>');
-            $('body').append($tempInput);
-            $tempInput.val(textToCopy).select();
-            document.execCommand('copy');
-            $tempInput.remove();
-            $("#loading").show(0.5).delay(500).hide(0.5);
-        });
-        $("html").mousemove(function(e) {
-            $("#loading").css({
-                "top": e.pageY,
-                "left": e.pageX + 15
-            });
-        });
-    
-    });
-</script>
-
-<style>
-.copy-text {
-  cursor: pointer;
-}
-.copy-text:hover {
-  background-color: #003100;
-}
-#loading {
-    position: absolute;
-    background-color: #f0f0f0;
-    padding: 5px;
-    border: 1px solid #ccc;
-    display: none;
-}
-td {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  color: rgba(255, 255, 255, 0.85);
-    font-variant: tabular-nums;
-    line-height: 1.5715;
-    list-style: none;
-    font-feature-settings: 'tnum';
-    font-size: 14px;
-}
-
-a {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  color: rgba(255, 255, 255, 0.85);
-    font-variant: tabular-nums;
-    line-height: 1.5715;
-    list-style: none;
-    font-feature-settings: 'tnum';
-    font-size: 14px;
-}
-
-th {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.sortable {
-  cursor: pointer;
-  font-weight: bold;
-    border: none;
-}
-
-.sortable:hover {
-  background-color: grey;
-}
-</style>
-<script>
-function sortTable(sender) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = sender.parentElement.parentElement.parentElement;
-
-  switching = true;
-  dir = "asc";
-
-    var n = 0;
-    for(i = 0; i < table.rows[0].getElementsByTagName("TD").length; i++)
-        if (table.rows[0].getElementsByTagName("TD")[i] == sender) {
-            n = i;
-            break;
-        }
-
-  while (switching) {
-    switching = false;
-    rows = table.rows;
-
-    for (i = 1; i < (rows.length - 1); i++) {
-
-      shouldSwitch = false;
-
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      var num1 = getISK(x.innerHTML);
-      var num2 = getISK(y.innerHTML);
-      if (dir == "asc") {
-        
-        if (num1 > num2) {
-          shouldSwitch = true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (num1 < num2) {
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      switchcount ++;
-    } else {
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
-
-function getISK(isk) {
-    if (isk.indexOf('0') > 0)
-      return parseFloat(isk.replace(",",""));
-    else return isk;
-}
-            </script>
 </body>
 </html>
