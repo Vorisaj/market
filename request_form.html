@@ -28,7 +28,7 @@
                         Price: <span id="doctrine_ship_price">0</span> ISK</br>
                     </div>
                     <div id="import_details" style="display: none;">
-                        Import details:<br/>
+                        <span class="label">Import details:</span><br/>
                         <textarea style="width:400px; height:200px; " placeholder="Enter list of items to be appraised.
 example:
 
@@ -175,10 +175,20 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                                 $("#captcha_error").show();
                             } else {
                                 //print summary
+                                var appraisal_items = data["items"];
+                                var items = "<table>";
+                                for(var i = 0; i < appraisal_items.length; i++) {
+                                    items += "<tr><td>"+appraisal_items[i]["amount"]+"x</td><td>"+appraisal_items[i]["itemType"]["name"]+"</td></tr>";
+                                }
+                                items += "</table>";
                                 var table = "<table>";
                                 table += "<tr><td>Appraisal</td><td>https://janice.e-351.com/a/"+data["code"]+"</td></tr>";
+                                table += "<tr><td>Total Volume:</td><td>"+data["totalPackagedVolume"]+" m3</td></tr>";
+                                table += "<tr><td>Jita Price:</td><td>"+data["immediatePrices"]["totalSellPrice"]+" ISK</td></tr>";
+                                table += "<tr><td>Final Price:</td><td><b>"+data["effectivePrices"]["totalSellPrice"]+" ISK</b></td></tr>";
+                                table += "<tr><td>Final Items</td><td>"+items+"</td></tr>";
                                 table += "</table>";
-
+                                $('#main_content').prepend(table);
                                 $("#submit").show();
                             }
                         },
