@@ -20,7 +20,7 @@
                         <option value="market_request">Market Request</option>
                         <option value="doctrine_ship">Doctrine Ship Order</option>
                     </select><br/>
-                    <span style="font-style: italic;font-size: 10pt;" id="order_type_hint"></span>
+                    <span style="font-style: italic;font-size: 10pt;" id="order_type_hint"></span><br/>
                     <br/>
                     <div id="doctrine_ship_details" style="display: none;">
                         <span id="doctrine_fetching_message">Fetching price sheet...<br/></span>
@@ -116,11 +116,14 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                 $('#request_type').on('change', function() {
                     $("#calculate").hide();
                     $("#submit").hide();
+                    $("#order_type_hint").html("");
                     if (this.value == "import") {
+                        $("#order_type_hint").html("We will import stuff from Jita for you.");
                         $("#calculate").show();
                         $("#import_details").show(); 
                     } else $("#import_details").hide();
                     if (this.value == "doctrine_ship") {
+                         $("#order_type_hint").html("We will contract you fitted doctrine ships.");
                          $("#submit").show();
                          $("#doctrine_ship_details").show();
                     } else $("#doctrine_ship_details").hide();
