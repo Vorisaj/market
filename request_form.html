@@ -1,7 +1,6 @@
 
 <html>
     <head>
-        <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="request_form.css">
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -21,41 +20,48 @@
             <div class="card" id="main_content">
                 
                 <table>
+                    <!--Requestor field-->
                     <tr><td>Requestor (in-game name):</td><td><input type="text" name="requestor_name" id="requestor_name"/></td></tr>
-                </table>
 
-                <br/>
-                <span class="label">Request type:</span><br/>
-                <select name="request_type" id="request_type">
-                    <option value=""></option>
-                    <option value="import">Import</option>
-                    <option value="market_request">Market Request</option>
-                    <option value="doctrine_ship">Doctrine Ship Order</option>
-                </select><br/>
-                <span style="font-style: italic;font-size: 10pt;" id="order_type_hint"></span><br/>
-                <br/>
-                <div id="doctrine_ship_details" style="display: none;">
-                    <span id="doctrine_fetching_message">Fetching price sheet...<br/></span>
-                    <select name="doctrine_ships_select" id="doctrine_ships_select"></select><br/>
-                    Amount:  <input type="text" name="doctrine_ships_amount" id="doctrine_ships_amount"/><br/>
-                    Price: <span id="doctrine_ship_price">0</span> ISK</br>
-                </div>
-                <div id="import_details" style="display: none;">
-                    <span class="label">Import details:</span><br/>
-                    <textarea style="width:400px; height:200px; " placeholder="Enter list of items to be appraised.
+                    <!--Request type field-->
+                    <tr><td>Request type:</td><td>
+                        <select name="request_type" id="request_type">
+                            <option value=""></option>
+                            <option value="import">Import</option>
+                            <option value="market_request">Market Request</option>
+                            <option value="doctrine_ship">Doctrine Ship Order</option>
+                        </select>
+                        <span style="font-style: italic;font-size: 10pt;" id="order_type_hint"></span>
+                    </td></tr>
+
+                    <!-- Import Detail text area-->
+                    <tr id="import_details" style="display:none"><td>Import details:</td><td><textarea style="width:400px; height:200px; " placeholder="Enter list of items to be appraised.
 example:
-
+                        
 Tritanium 22222
-Pyerite 8000" name="details" id="details"></textarea></br>
-                </div><br/>
+Pyerite 8000" name="details" id="details"></textarea></td></tr>
 
-                <span class="label">Comment:</span><br/>
-                <input type="text" name="comment" id="comment"/><br/>
+                    <!-- Doctrine ship details-->
+                    <tr id="doctrine_ship_details" style="display: none;"><td></td><td>
+                        <span id="doctrine_fetching_message">Fetching price sheet...<br/></span>
+                        <select name="doctrine_ships_select" id="doctrine_ships_select"></select><br/>
+                        Amount:  <input type="text" name="doctrine_ships_amount" id="doctrine_ships_amount"/><br/>
+                        Price: <span id="doctrine_ship_price">0</span> ISK</br>
+                    </td></tr>
+
+                    <!-- Comment -->
+                    <tr><td>Comment:</td><td><textarea style="width:300px; height:70px; " type="text" name="comment" id="comment"></textarea></td></tr>
+
+                </table>
+                <br/>
+                <div>
+
+                </div>
 
                 <br/>
                 <img src="loading.gif" style="display: none; width: 30px;" id="loading"/><br/>
                 <input style="display: none;" type="Submit" id="submit" value="Submit Quote"/>
-                <input type="Submit" id="calculate" value="Calculate Quote"/><br/>
+                <input class="button" type="Submit" id="calculate" value="Calculate Quote"/><br/>
                 <span style="color:red; display: none;" id="captcha_error">Captcha Error!</br></span>
                 <span style="color:red; display: none;" id="general_error">Something went wrong Error!</br></span>
                 <span style="color:green; display: none;" id="general_success">Request Submited! Refresh the page to create a new one!</br></span>
