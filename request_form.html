@@ -20,6 +20,7 @@
                         <option value="market_request">Market Request</option>
                         <option value="doctrine_ship">Doctrine Ship Order</option>
                     </select><br/>
+                    <span style="font-style: italic;font-size: 10pt;" id="order_type_hint"></span>
                     <br/>
                     <div id="doctrine_ship_details" style="display: none;">
                         <span id="doctrine_fetching_message">Fetching price sheet...<br/></span>
@@ -41,7 +42,6 @@ Pyerite 8000" name="details" id="details"></textarea></br>
 
                     <br/>
                     <img src="loading.gif" style="display: none; width: 30px;" id="loading"/><br/>
-                    <span style="color:orange; display: none;" id="captcha_ask">Please complete Captcha again.</br></span>
                     <input style="display: none;" type="Submit" id="submit" value="Submit Quote"/>
                     <input type="Submit" id="calculate" value="Calculate Quote"/><br/>
                     <span style="color:red; display: none;" id="captcha_error">Captcha Error!</br></span>
@@ -140,7 +140,6 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                     $("#requestor_name").hide();
                     $(".label").hide();
                     $("#appraisal_table").remove();
-                    $("#captcha_ask").hide();
                     $(".g-recaptcha").hide();
                     const type = $('#request_type').val();
                     var payload = {};
@@ -204,8 +203,7 @@ Pyerite 8000" name="details" id="details"></textarea></br>
                                 table += "</table>";
                                 $('#main_content').prepend(table);
                                 $("#submit").show();
-                                ResetCaptcha();
-                                $("#captcha_ask").show();
+                                $(".g-recaptcha").hide();
                             }
                         },
 
