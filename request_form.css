@@ -116,6 +116,10 @@ input {
     appearance: textfield !important;
 }
 
+.select-options {
+    display: none;
+}
+
 .select-hidden {
     display: none;
     visibility: hidden;
@@ -183,6 +187,15 @@ li:hover {
 }
 
 ul {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 999;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin: 0px;
     color: rgba(255, 255, 255, 0.85);
     font-variant: tabular-nums;
     line-height: 1.5715;
@@ -198,6 +211,11 @@ ul {
     border-radius: 2px;
     outline: none;
     box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.48), 0 6px 16px 0 rgba(0, 0, 0, 0.32), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
+}
+
+.select {
+    position: relative;
+    width: 180px;
 }
 
 .button {
@@ -222,4 +240,27 @@ ul {
     color: rgba(255, 255, 255, 0.85);
     border-color: #434343;
     background: transparent;
+}
+
+.button:hover {
+    color: #1a7256;
+    border-color: #1a7256;
+    background: transparent;
+}
+
+.form-table td {
+    padding-bottom: 1em;
+    }
+
+.normal-table {
+    border-collapse: collapse;
+}
+
+.normal-table table{
+    border-collapse: collapse;
+}
+
+.normal-table td {
+    padding: 4px;
+    border: 1px solid #303030;
 }

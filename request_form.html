@@ -4,11 +4,13 @@
         <link rel="stylesheet" href="request_form.css">
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src="request_form.js"></script>
     </head>
 
     <body>
     <header class="layout-header" style="line-height: 1; color: white; text-align: center; padding: 0px;">
         <div style="padding: 12px; cursor: pointer;">
+            <img style="margin-left: -165px;top: 8px;position: absolute;width: 48px;"  alt="Black Rose logo" src="logo.webp">
             <div style="font-size: 1.3rem; line-height: 1; margin-bottom: 5px;">Request Tool</div>
             <div style="font-size: 0.7rem;">Create a request for the Industrial department</div>
         </div>
@@ -19,12 +21,12 @@
 
             <div class="card" id="main_content">
                 
-                <table>
+                <table class="form-table" id="main-form">
                     <!--Requestor field-->
-                    <tr><td>Requestor (in-game name):</td><td><input type="text" name="requestor_name" id="requestor_name"/></td></tr>
+                    <tr class="form-input"><td>Requestor (in-game name):</td><td><input type="text" name="requestor_name" id="requestor_name"/></td></tr>
 
                     <!--Request type field-->
-                    <tr><td>Request type:</td><td>
+                    <tr class="form-input"><td>Request type:</td><td>
                         <select name="request_type" id="request_type">
                             <option value=""></option>
                             <option value="import">Import</option>
@@ -35,23 +37,25 @@
                     </td></tr>
 
                     <!-- Import Detail text area-->
-                    <tr id="import_details" style="display:none"><td>Import details:</td><td><textarea style="width:400px; height:200px; " placeholder="Enter list of items to be appraised.
+                    <tr class="form-input" id="import_details" style="display:none"><td>Import details:</td><td><textarea style="width:400px; height:200px; " placeholder="Enter list of items to be appraised.
 example:
                         
 Tritanium 22222
 Pyerite 8000" name="details" id="details"></textarea></td></tr>
 
                     <!-- Doctrine ship details-->
-                    <tr id="doctrine_ship_details" style="display: none;"><td></td><td>
-                        <span id="doctrine_fetching_message">Fetching price sheet...<br/></span>
-                        <select name="doctrine_ships_select" id="doctrine_ships_select"></select><br/>
-                        Amount:  <input type="text" name="doctrine_ships_amount" id="doctrine_ships_amount"/><br/>
-                        Price: <span id="doctrine_ship_price">0</span> ISK</br>
-                    </td></tr>
+                    <tr class="doctrine_ship_details" style="display: none;"><td>Ship:</td><td><select name="doctrine_ships_select" id="doctrine_ships_select"></select><span id="doctrine_fetching_message">Fetching price sheet...<br/></span></td></tr>
+                    <tr class="doctrine_ship_details" style="display: none;"><td>Amount:</td><td><input type="text" name="doctrine_ships_amount" id="doctrine_ships_amount"/></td></tr>
+                    <tr class="doctrine_ship_details" style="display: none;"><td>Price:</td><td><span id="doctrine_ship_price">0</span> ISK</td></tr>   
 
                     <!-- Comment -->
-                    <tr><td>Comment:</td><td><textarea style="width:300px; height:70px; " type="text" name="comment" id="comment"></textarea></td></tr>
+                    <tr class="form-input"><td>Comment:</td><td><textarea style="width:300px; height:70px; " type="text" name="comment" id="comment"></textarea></td></tr>
 
+                    <!-- Submit -->
+                    <tr><td></td><td>
+                        <input class="button" type="Submit" id="calculate" value="Calculate Quote"/>
+                        <input class="button" style="display: none;" type="Submit" id="submit" value="Submit Quote"/>
+                    </td></tr>
                 </table>
                 <br/>
                 <div>
@@ -60,8 +64,6 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
 
                 <br/>
                 <img src="loading.gif" style="display: none; width: 30px;" id="loading"/><br/>
-                <input style="display: none;" type="Submit" id="submit" value="Submit Quote"/>
-                <input class="button" type="Submit" id="calculate" value="Calculate Quote"/><br/>
                 <span style="color:red; display: none;" id="captcha_error">Captcha Error!</br></span>
                 <span style="color:red; display: none;" id="general_error">Something went wrong Error!</br></span>
                 <span style="color:green; display: none;" id="general_success">Request Submited! Refresh the page to create a new one!</br></span>
@@ -106,6 +108,7 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                         for(var i = 0; i < pricesheeet.length; i++) {
                             $("#doctrine_ships_select").append('<option value="'+pricesheeet[i]["Contract Title"]+'">'+pricesheeet[i]["Contract Title"]+'</option>');
                         }
+                        InitializeDropDownList("#doctrine_ships_select");
                     })
                     .catch(error => {
                         console.error("Error fetching or parsing HTML:", error);
@@ -151,23 +154,16 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                     if (this.value == "doctrine_ship") {
                          $("#order_type_hint").html("We will contract you fitted doctrine ships.");
                          $("#submit").show();
-                         $("#doctrine_ship_details").show();
-                    } else $("#doctrine_ship_details").hide();
+                         $(".doctrine_ship_details").show();
+                    } else $(".doctrine_ship_details").hide();
+                    if (this.value == "market_request") {
+                        $("#order_type_hint").html("Work in progress...");
+                    }
                 });
 
                 $("#submit").click("click",function() {
-                    $(this).hide();
-                    $("#doctrine_ship_details").hide();
-                    $("#doctrine_ships_amount").hide();
-                    $("#doctrine_ships_price").hide();
-                    $("#request_type").hide();
-                    $("#comment").hide();
-                    $("#general_error").hide();
+                    $("#main-form").hide();
                     $("#loading").show();
-                    $("#type").hide();
-                    $("#details").hide();
-                    $("#requestor_name").hide();
-                    $(".label").hide();
                     $("#appraisal_table").remove();
                     $(".g-recaptcha").hide();
                     const type = $('#request_type').val();
@@ -195,13 +191,8 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
 
                 $("#calculate").click("click",function() {
                     $(this).hide();
-                    $("#request_type").hide();
+                    $(".form-input").hide();
                     $("#loading").show();
-                    $("#type").hide();
-                    $("#details").hide();
-                    $(".label").hide();
-                    $("#requestor_name").hide();
-                    $("#comment").hide();
                     var request_data = $("#details").val();
                     $.ajax({
                         type: "POST",
@@ -215,6 +206,7 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                             $("#loading").hide();                            
                             if ("error" in data) {
                                 $("#captcha_error").show();
+                                $("#calculate").show();
                             } else {
                                 //print summary
                                 var appraisal_items = data["items"];
@@ -223,11 +215,11 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                                     items += "<tr><td>"+appraisal_items[i]["amount"]+"x</td><td>"+appraisal_items[i]["itemType"]["name"]+"</td></tr>";
                                 }
                                 items += "</table>";
-                                var table = "<table id='appraisal_table'>";
-                                table += "<tr><td>Appraisal</td><td>https://janice.e-351.com/a/"+data["code"]+"</td></tr>";
+                                var table = "<table class='normal-table' id='appraisal_table'>";
+                                table += "<tr><td>Appraisal</td><td><a href='https://janice.e-351.com/a/"+data["code"]+"'>https://janice.e-351.com/a/"+data["code"]+"</a></td></tr>";
                                 table += "<tr><td>Total Volume:</td><td>"+data["totalPackagedVolume"]+" m3</td></tr>";
-                                table += "<tr><td>Jita Price:</td><td>"+data["immediatePrices"]["totalSellPrice"]+" ISK</td></tr>";
-                                table += "<tr><td>Final Price:</td><td><b>"+data["effectivePrices"]["totalSellPrice"]+" ISK</b></td></tr>";
+                                table += "<tr><td>Jita Price:</td><td>"+Math.round(["immediatePrices"]["totalSellPrice"])+" ISK</td></tr>";
+                                table += "<tr><td>Final Price:</td><td><b>"+Math.round(data["effectivePrices"]["totalSellPrice"])+" ISK</b></td></tr>";
                                 table += "<tr><td>Final Items</td><td>"+items+"</td></tr>";
                                 table += "</table>";
                                 $('#main_content').prepend(table);
