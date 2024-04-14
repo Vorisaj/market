@@ -116,6 +116,11 @@ input {
     appearance: textfield !important;
 }
 
+input:hover {
+    border-color: #1a7256;
+    border-right-width: 1px;
+}
+
 .select-options {
     display: none;
 }

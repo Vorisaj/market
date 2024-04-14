@@ -155,7 +155,8 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                          $(".doctrine_ship_details").show();
                     } else $(".doctrine_ship_details").hide();
                     if (this.value == "market_request") {
-                        $("#order_type_hint").html("Work in progress...");
+                        $("#order_type_hint").html("Request items to be tracked and seeded on the local market.");
+                        $("#submit").show();
                     }
                 });
 
@@ -168,6 +169,7 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                     var payload = {};
                     if (type == "import") payload = {"import_request":1,"g-recaptcha-response":$("#g-recaptcha-response").val()};
                     if (type == "doctrine_ship") payload = {"requestor":$("#requestor_name").val(),"ship_request":1,"comment":$("#comment").val(),"amount":$("#doctrine_ships_amount").val(),"fit":$("#doctrine_ships_select").val(),"g-recaptcha-response":$("#g-recaptcha-response").val()};
+                    if (type == "market_request") payload = {"market_request":1,"requestor":$("#requestor_name").val(),"comment":$("#comment").val(),"g-recaptcha-response":$("#g-recaptcha-response").val()};
                     $.ajax({
                         type: "POST",
                         url: "https://market.baldhead.eu/kauihznaiuslamxjd.php",
