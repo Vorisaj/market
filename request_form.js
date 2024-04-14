@@ -2,6 +2,14 @@ $(function() {
     InitializeDropDownList("#request_type");
 });
 
+function FormatISK(num) {
+    var units = ["","K","M","B","T","Q"]
+    var unit = (num / 1.0e+1).toFixed(0).toString().length
+    var r = unit%3
+    var x =  Math.abs(Number(num))/Number('1.0e+'+(unit-r)).toFixed(2)
+    return ((Math.round(x)==x) ? x : x.toFixed(2))+ ' ' + units[Math.floor(unit / 3)]
+}
+
 function InitializeDropDownList(id) {
         var $this = $(id), numberOfOptions = $(id).children('option').length;
       

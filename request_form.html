@@ -1,7 +1,7 @@
 
 <html>
     <head>
-        <link rel="stylesheet" href="request_form.css">
+        <link rel="stylesheet" href="new_style.css">
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script src="request_form.js"></script>
@@ -54,7 +54,7 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                     <!-- Submit -->
                     <tr><td></td><td>
                         <input class="button" type="Submit" id="calculate" value="Calculate Quote"/>
-                        <input class="button" style="display: none;" type="Submit" id="submit" value="Submit Quote"/>
+                        <input class="button" style="display: none;top: 16px;border-color: #68efff;" type="Submit" id="submit" value="Submit Quote"/>
                     </td></tr>
                 </table>
                 <br/>
@@ -216,10 +216,11 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                                 }
                                 items += "</table>";
                                 var table = "<table class='normal-table' id='appraisal_table'>";
-                                table += "<tr><td>Appraisal</td><td><a href='https://janice.e-351.com/a/"+data["code"]+"'>https://janice.e-351.com/a/"+data["code"]+"</a></td></tr>";
-                                table += "<tr><td>Total Volume:</td><td>"+data["totalPackagedVolume"]+" m3</td></tr>";
-                                table += "<tr><td>Jita Price:</td><td>"+Math.round(["immediatePrices"]["totalSellPrice"])+" ISK</td></tr>";
-                                table += "<tr><td>Final Price:</td><td><b>"+Math.round(data["effectivePrices"]["totalSellPrice"])+" ISK</b></td></tr>";
+                                table += "<tr><td>Appraisal</td><td><a target='_blank' href='https://janice.e-351.com/a/"+data["code"]+"'>https://janice.e-351.com/a/"+data["code"]+"</a></td></tr>";
+                                table += "<tr><td>Total Volume:</td><td>"+Math.round(data["totalPackagedVolume"])+" m3</td></tr>";
+                                table += "<tr><td>Jita Price:</td><td>"+FormatISK(Math.round(data["immediatePrices"]["totalSellPrice"]))+" ISK</td></tr>";
+                                table += "<tr><td>Estimated Price:</td><td><b>"+FormatISK(Math.round(data["effectivePrices"]["totalSellPrice"]))+" ISK</b></td></tr>";
+                                table += "<tr><td colspan='2'><span style='font-style: italic;font-size: 10pt;'>Final price will be calculated upon delivery.</span></td></tr>";
                                 table += "<tr><td>Final Items</td><td>"+items+"</td></tr>";
                                 table += "</table>";
                                 $('#main_content').prepend(table);
