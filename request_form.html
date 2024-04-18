@@ -33,6 +33,7 @@
                             <option value="import">Import</option>
                             <option value="market_request">Market Request</option>
                             <option value="doctrine_ship">Doctrine Ship Order</option>
+                            <option value="haul_request">Haul Request</option>
                         </select>
                         <span style="font-style: italic;font-size: 10pt;" id="order_type_hint"></span>
                     </td></tr>
@@ -48,6 +49,12 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                     <tr class="doctrine_ship_details" style="display: none;"><td>Ship:</td><td><select name="doctrine_ships_select" id="doctrine_ships_select"></select><span id="doctrine_fetching_message">Fetching price sheet...<br/></span></td></tr>
                     <tr class="doctrine_ship_details" style="display: none;"><td>Amount:</td><td><input type="text" name="doctrine_ships_amount" id="doctrine_ships_amount"/></td></tr>
                     <tr class="doctrine_ship_details" style="display: none;"><td>Price:</td><td><span id="doctrine_ship_price">0</span> ISK</td></tr>   
+
+                    <!-- Hauling details-->
+                    <tr class="hauling_request_details" style="display: none;"><td>From:</td><td><input type="text" name="haul_req_from" id="haul_req_from"/></td></tr>
+                    <tr class="hauling_request_details" style="display: none;"><td>To:</td><td><input type="text" name="haul_req_to" id="haul_req_to"/></td></tr>
+                    <tr class="hauling_request_details" style="display: none;"><td>Volume (m3):</td><td><input type="text" name="haul_req_volume" id="haul_req_volume"/></td></tr>
+                    <tr class="hauling_request_details" style="display: none;"><td>Collateral:</td><td><input type="text" name="haul_req_collateral" id="haul_req_collateral"/></td></tr>
 
                     <!-- Comment -->
                     <tr class="form-input"><td>Comment:</td><td><textarea style="width:300px; height:70px; " type="text" name="comment" id="comment"></textarea></td></tr>
@@ -145,18 +152,30 @@ Pyerite 8000" name="details" id="details"></textarea></td></tr>
                     $("#calculate").hide();
                     $("#submit").hide();
                     $("#order_type_hint").html("");
+                    $("#import_details").hide();
+                    $(".doctrine_ship_details").hide();
+                    $(".hauling_request_details").hide();
+
                     if (this.value == "import") {
                         $("#order_type_hint").html("We will import stuff from Jita for you.");
                         $("#calculate").show();
                         $("#import_details").show(); 
-                    } else $("#import_details").hide();
+                    } 
+
                     if (this.value == "doctrine_ship") {
                          $("#order_type_hint").html("We will contract you fitted doctrine ships.");
                          $("#submit").show();
                          $(".doctrine_ship_details").show();
-                    } else $(".doctrine_ship_details").hide();
+                    }
+
                     if (this.value == "market_request") {
                         $("#order_type_hint").html("Request items to be tracked and seeded on the local market.");
+                        $("#submit").show();
+                    }
+
+                    if (this.value == "haul_request") {
+                        $("#order_type_hint").html("We will haul stuff for you.");
+                        $(".hauling_request_details").show();
                         $("#submit").show();
                     }
                 });
